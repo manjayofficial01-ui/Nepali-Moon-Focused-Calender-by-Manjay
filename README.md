@@ -5,6 +5,8 @@ A single-file, zero-build **Nepali lunar calendar (पात्रो)** web app
 ## ✨ Features
 
 - **आजको पञ्चाङ्ग** — live tithi, nakshatra, yoga, karana, वार with progress bars and `हिजो / भोलि` day markers on midnight-crossing ranges (tithis last ≈20–27 h, so a bare `HH:MM – HH:MM` range always gets day context plus its total duration).
+- **मिति खोज्नुहोस् (date jump)** — pick any date (AD 1913–2034 = BS 1970–2090) in the calendar header; the grid navigates there and the full detail popup opens — past or future.
+- **WCAG AA contrast** — label/accent/festival colors verified ≥4.5:1 against their surfaces in both themes.
 - **नक्षत्र चक्र** — mini wheel in every day popup: 12 rashi ring, 27 nakshatra sectors, 108 pada ticks; Sun & Moon markers sit at their sidereal longitudes, so the arc between them *is* the tithi.
 - **नक्षत्र विवरण** — nakshatra पाद (1–4), नामाक्षर, स्वामी, देवता per day.
 - **ग्रह स्थिति** — sidereal longitudes of सूर्य…शनि + राहु/केतु with वक्री (retrograde) flags, anchored to the day's sunrise.

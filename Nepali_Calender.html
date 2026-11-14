@@ -15,9 +15,10 @@
     --color-bg:#eef1f6;--color-surface:rgba(252,252,250,.78);--color-surface-2:rgba(255,255,255,.9);
     --color-surface-offset:rgba(235,232,225,.75);--color-surface-dynamic:#dcd8d0;
     --color-divider:rgba(120,115,105,.18);--color-border:rgba(120,115,105,.28);
-    --color-text:#26231b;--color-text-muted:#6e6a62;--color-text-faint:#9a9690;
-    --color-accent:#a6792b;--color-primary:#8b7355;--color-moon:#c8b47c;
-    --color-moon-glow:rgba(200,180,124,.3);--color-fest:#d94330;
+    --color-text:#26231b;--color-text-muted:#6e6a62;--color-text-faint:#6e6a64;
+    --color-accent:#8f6420;--color-primary:#8b7355;--color-moon:#c8b47c;
+    --color-moon-glow:rgba(200,180,124,.3);--color-fest:#c1382a;
+    color-scheme:light;
     --shadow-sm:0 1px 2px rgba(38,35,27,.06);--shadow-md:0 6px 18px rgba(38,35,27,.1);--shadow-lg:0 20px 48px rgba(38,35,27,.16);
     --radius-sm:.375rem;--radius-md:.6rem;--radius-lg:.9rem;--radius-xl:1.2rem;--radius-full:9999px;
     --font-display:'Tiro Devanagari Sanskrit',Georgia,serif;--font-body:'Mukta','Inter',sans-serif;
@@ -27,12 +28,13 @@
     --tr:200ms cubic-bezier(.16,1,.3,1)
   }
   [data-theme="dark"]{
-    --color-bg:#070609;--color-surface:rgba(19,17,13,.66);--color-surface-2:rgba(24,21,16,.9);
-    --color-surface-offset:rgba(34,30,22,.7);--color-surface-dynamic:#2a261e;
+    --color-bg:#070609;--color-surface:rgba(19,17,13,.74);--color-surface-2:rgba(24,21,16,.92);
+    --color-surface-offset:rgba(34,30,22,.78);--color-surface-dynamic:#2a261e;
     --color-divider:rgba(226,206,160,.1);--color-border:rgba(226,206,160,.18);
-    --color-text:#eee2cc;--color-text-muted:#b0966e;--color-text-faint:#786550;
+    --color-text:#eee2cc;--color-text-muted:#b0966e;--color-text-faint:#98835e;
     --color-accent:#ddb86a;--color-primary:#d4ab66;--color-moon:#f0e2bb;
     --color-moon-glow:rgba(240,226,187,.18);--color-fest:#ef6a5a;
+    color-scheme:dark;
     --shadow-sm:0 1px 3px rgba(0,0,0,.35);--shadow-md:0 8px 24px rgba(0,0,0,.46);--shadow-lg:0 24px 60px rgba(0,0,0,.66)
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -71,7 +73,7 @@
   .date-card-label{font-size:.84rem;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-faint);font-weight:700}
   .date-card-val{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-text);line-height:1.2}
   .date-card-sub{font-size:var(--text-xs);color:var(--color-text-muted)}
-  .date-card.ns-card{border-color:color-mix(in oklch,var(--color-accent) 35%,var(--color-border))}
+  .date-card.ns-card{border-color:color-mix(in oklch,var(--color-accent) 45%,var(--color-border));background:color-mix(in oklch,var(--color-accent) 9%,var(--color-surface));box-shadow:0 0 0 1px color-mix(in oklch,var(--color-accent) 18%,transparent),var(--shadow-md)}
   .date-card.ns-card .date-card-label{color:var(--color-accent)}
 
   /* ---------- Hero ---------- */
@@ -158,7 +160,7 @@
   .fest-count .fc-num{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-fest);line-height:1.1}
   .fest-count .fc-lbl{font-size:.72rem;color:var(--color-fest);font-weight:700}
   .fest-count.is-today{background:var(--color-fest);border-color:var(--color-fest)}
-  .fest-count.is-today .fc-num,.fest-count.is-today .fc-lbl{color:#fff}
+  .fest-count.is-today .fc-num,.fest-count.is-today .fc-lbl{color:#1d0c09}
   .fest-name{font-weight:700;font-size:var(--text-sm);margin-bottom:.15rem}
   .fest-date{font-size:.84rem;color:var(--color-accent);font-weight:600;margin-bottom:.25rem}
   .fest-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.45}
@@ -176,7 +178,7 @@
   .phase-popup.visible{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
   .popup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
   .popup-date{font-size:var(--text-xs);color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.05em}
-  .popup-close{width:28px;height:28px;display:grid;place-items:center;border-radius:var(--radius-full);transition:background var(--tr)}
+  .popup-close{width:34px;height:34px;display:grid;place-items:center;border-radius:var(--radius-full);transition:background var(--tr)}
   .popup-close:hover{background:var(--color-surface-dynamic)}
   .popup-moon{text-align:center;margin-bottom:.6rem;padding-bottom:.8rem;border-bottom:1px solid var(--color-divider)}
   .popup-moon-svg{width:74px;height:74px;margin:0 auto .45rem;display:block;filter:drop-shadow(0 0 16px var(--color-moon-glow))}
@@ -211,6 +213,36 @@
 
   .reveal{opacity:0;transform:translateY(18px);transition:opacity 650ms cubic-bezier(.16,1,.3,1),transform 650ms cubic-bezier(.16,1,.3,1)}
   .reveal.in{opacity:1;transform:none}
+
+  /* staggered entrance for the dates strip (ने.सं → बि.सं → AD) */
+  .dates-strip .reveal:nth-child(2){transition-delay:90ms}
+  .dates-strip .reveal:nth-child(3){transition-delay:180ms}
+
+  /* calendar month-change entrance (only on navigation, not on selection) */
+  .calendar-grid.animate-in .day-cell{animation:cellIn .3s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0)*9ms)}
+  @keyframes cellIn{from{opacity:0;transform:translateY(7px) scale(.97)}to{opacity:1;transform:none}}
+
+  /* live pulse on the nakshatra-wheel Sun & Moon markers */
+  .wheel-moon,.wheel-sun{transform-box:fill-box;transform-origin:center}
+  .wheel-moon{animation:wheelPulse 2.8s ease-in-out infinite}
+  .wheel-sun{animation:wheelPulse 2.8s ease-in-out 1.4s infinite}
+  @keyframes wheelPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.28);opacity:.82}}
+
+  /* tactile press feedback */
+  .day-cell:active{transform:translateY(0) scale(.985)}
+  .icon-btn:active{transform:scale(.92)}
+  .date-card:active,.pancha-item:active{transform:translateY(-1px) scale(.99)}
+
+  /* visible keyboard focus everywhere */
+  :focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+
+  /* date-jump control (calendar header) */
+  .date-jump{display:flex;align-items:center;gap:.45rem;margin-top:.55rem;justify-content:center}
+  .date-jump svg{color:var(--color-accent);flex-shrink:0}
+  .date-jump input{font-family:var(--font-body);font-size:1rem;font-weight:600;color:var(--color-text);background:var(--color-surface-offset);border:1px solid var(--color-border);border-radius:var(--radius-full);padding:.3rem .8rem;transition:border-color var(--tr),box-shadow var(--tr)}
+  .date-jump input:hover{border-color:var(--color-primary)}
+  .date-jump input:focus{border-color:var(--color-accent);box-shadow:0 0 0 3px color-mix(in oklch,var(--color-accent) 22%,transparent);outline:none}
+  .date-jump-err{display:block;font-size:.82rem;font-weight:600;color:var(--color-fest);margin-top:.4rem;text-align:center}
 
   @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
@@ -269,6 +301,11 @@
     </header>
 
     <div class="dates-strip reveal">
+      <div class="date-card panel ns-card">
+        <div class="date-card-label">नेपाल सम्बत (ने.सं)</div>
+        <div class="date-card-val" id="dsNS">—</div>
+        <div class="date-card-sub" id="dsNSsub">—</div>
+      </div>
       <div class="date-card panel">
         <div class="date-card-label">विक्रम सम्बत (बि.सं)</div>
         <div class="date-card-val" id="dsBS">—</div>
@@ -278,11 +315,6 @@
         <div class="date-card-label">ईसवी सन् (AD)</div>
         <div class="date-card-val" id="dsAD">—</div>
         <div class="date-card-sub" id="dsADsub">—</div>
-      </div>
-      <div class="date-card panel ns-card">
-        <div class="date-card-label">नेपाल सम्बत (ने.सं)</div>
-        <div class="date-card-val" id="dsNS">—</div>
-        <div class="date-card-sub" id="dsNSsub">—</div>
       </div>
     </div>
 
@@ -352,6 +384,11 @@
         <div style="text-align:center">
           <div class="month-title" id="monthTitle">लोड हुँदैछ…</div>
           <div class="month-sub" id="monthSub"></div>
+          <label class="date-jump" title="कुनै पनि मितिको पूर्ण विवरण हेर्नुहोस्">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <input type="date" id="dateJump" min="1913-04-13" max="2034-04-13" aria-label="मिति छान्नुहोस् (ईसवी सन्) — पूर्ण विवरण हेर्न" autocomplete="off" />
+          </label>
+          <span class="date-jump-err" id="dateJumpErr" hidden></span>
         </div>
         <button class="month-nav" id="nextMonth" aria-label="अर्को महिना">→</button>
       </div>
@@ -845,8 +882,8 @@ function drawNakWheel(el,ms){
   }
   /* sun & moon markers */
   const [mx,my]=wheelPt((WHEEL_R2+WHEEL_R3)/2,moon), [sx,sy]=wheelPt((WHEEL_R2+WHEEL_R3)/2,sun);
-  s+=`<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="4.2" fill="#dfa43c" stroke="var(--color-surface-2)" stroke-width="1.5"><title>सूर्य ${RASHI[Math.floor(sun/30)%12]} ${fmtDegMin(sun)}</title></circle>`
-    +`<circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="5.2" fill="var(--color-accent)" stroke="var(--color-surface-2)" stroke-width="1.5"><title>चन्द्र ${RASHI[Math.floor(moon/30)%12]} ${fmtDegMin(moon)}</title></circle>`;
+  s+=`<circle class="wheel-sun" cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="4.2" fill="#dfa43c" stroke="var(--color-surface-2)" stroke-width="1.5"><title>सूर्य ${RASHI[Math.floor(sun/30)%12]} ${fmtDegMin(sun)}</title></circle>`
+    +`<circle class="wheel-moon" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="5.2" fill="var(--color-accent)" stroke="var(--color-surface-2)" stroke-width="1.5"><title>चन्द्र ${RASHI[Math.floor(moon/30)%12]} ${fmtDegMin(moon)}</title></circle>`;
   /* center */
   s+=`<circle cx="${WHEEL_C}" cy="${WHEEL_C}" r="${WHEEL_R3-1}" fill="none" stroke="var(--color-divider)"/>`
     +`<text x="${WHEEL_C}" y="${WHEEL_C-5}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--color-text)">${NAKSHATRA_NAMES[info.nak]}</text>`
@@ -1110,8 +1147,8 @@ function renderHero(){
 function renderCalendar(dir){
   const grid=document.getElementById('calendarGrid');
   const title=document.getElementById('monthTitle');
-  grid.classList.remove('slide-l','slide-r');
-  if(dir) void grid.offsetWidth, grid.classList.add(dir>0?'slide-l':'slide-r');
+  grid.classList.remove('slide-l','slide-r','animate-in');
+  if(dir){ void grid.offsetWidth, grid.classList.add(dir>0?'slide-l':'slide-r','animate-in'); }
   grid.innerHTML='';
   title.textContent=`${BS_MONTHS[bsM-1]} ${toD(bsY)}`;
   const sa=bs.toGreg(bsY,bsM,1), ea=bs.toGreg(bsY,bsM,bs.daysInMonth(bsY,bsM));
@@ -1125,6 +1162,7 @@ function renderCalendar(dir){
   const nm=bsM===12?1:bsM+1, ny=bsM===12?bsY+1:bsY;
   const rem=(fd+dim)%7===0?0:7-(fd+dim)%7;
   for(let i=1;i<=rem;i++){ const g=bs.toGreg(ny,nm,i); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),true)); }
+  [...grid.children].forEach((c,i)=>c.style.setProperty('--i',Math.min(i,44)));
 }
 
 function mkCell(date,isOther){
@@ -1293,6 +1331,31 @@ function renderFestivals(){
   }
 }
 
+/* ---- Date jump: कुनै पनि मितिको पूर्ण विवरण ( BS library range 1970–2090 BS) ---- */
+const dateJump=document.getElementById('dateJump');
+const dateJumpErr=document.getElementById('dateJumpErr');
+dateJump.addEventListener('change',()=>{
+  dateJumpErr.hidden=true;
+  const v=dateJump.value;
+  if(!v) return;
+  let g=null;
+  try{ g=bs.toBik(v); }catch{ g=null; }
+  if(!g||!g.year){
+    dateJumpErr.textContent='यो मिति पात्रोको दायरा (वि.सं १९७०–२०९०) बाहिर छ — कृपया ई.सं १९१३–२०३४ भित्रको मिति छान्नुहोस्।';
+    dateJumpErr.hidden=false;
+    return;
+  }
+  /* the input value IS the AD date; toBik's return is BS (grid coords only) */
+  const [y,m,d]=v.split('-').map(Number);
+  const date=makeUTC(y,m-1,d);
+  bsY=g.year; bsM=g.month;
+  showPopup(date);
+});
+function initDateJump(){
+  const p=fmtKtmParts(new Date());
+  dateJump.value=`${p.year}-${String(p.month+1).padStart(2,'0')}-${String(p.day).padStart(2,'0')}`;
+}
+
 /* ============================================================
    NAV + INIT
 ============================================================ */
@@ -1311,6 +1374,7 @@ renderHero();
 renderCalendar();
 renderUpcoming();
 renderFestivals();
+initDateJump();
 requestAnimationFrame(renderSky);
 
 setInterval(renderClock,1000);
