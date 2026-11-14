@@ -1,5 +1,13 @@
 # नेपाली पञ्चाङ्ग पात्रो · Nepali Moon-Focused Calendar
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Author: Manjay Dongol](https://img.shields.io/badge/Author-Manjay%20Dongol%20(vibeCoder)-gold.svg)](#-build-info)
+[![Live on Vercel](https://img.shields.io/badge/Live-Vercel-black.svg)](https://nepali-moon-focused-calender-by-manjay-vibe-coder17.vercel.app)
+
+| Home | Day details — nakshatra wheel & graha |
+|---|---|
+| ![Home — dates strip, hero panchang & calendar](screenshot-hero.png) | ![Day popup — nakshatra wheel, pada & graha positions](screenshot-popup.png) |
+
 A single-file, zero-build **Nepali lunar calendar (पात्रो)** web app — with a live panchang engine, a mini **nakshatra wheel**, and sidereal **graha positions**. Open `Nepali_Calender.html` in any browser and it just works (fonts and BS-date library load from CDN).
 
 ## ✨ Features
@@ -25,7 +33,16 @@ A single-file, zero-build **Nepali lunar calendar (पात्रो)** web app
 ## 🚀 Run
 
 - Locally: double-click `Nepali_Calender.html`, or `npx serve .` and open the URL.
-- Vercel: import this repo → deploy (no build settings needed; `vercel.json` rewrites `/` to the app).
+- Live: [nepali-moon-focused-calender-by-manjay-vibe-coder17.vercel.app](https://nepali-moon-focused-calender-by-manjay-vibe-coder17.vercel.app)
+- Vercel: import this repo → deploy (no build settings needed; `vercel.json` rewrites `/` to the app). Every push to `main` auto-deploys.
+
+## 👤 Build Info
+
+| | |
+|---|---|
+| **Author / vibeCoder** | Manjay Dongol |
+| **GitHub** | [manjayofficial01-ui/Nepali-Moon-Focused-Calender-by-Manjay](https://github.com/manjayofficial01-ui/Nepali-Moon-Focused-Calender-by-Manjay) |
+| **License** | MIT — free to use, modify and redistribute with attribution (see [LICENSE](LICENSE)) |
 
 ## 🙏 Credits
 
