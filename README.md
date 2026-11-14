@@ -29,6 +29,7 @@ A single-file, zero-build **Nepali lunar calendar (पात्रो)** web app
 - **Planets** — `astronomy-engine` (same library as the Nakshatra Wheel project); राहु/केतु via the Meeus mean-node polynomial. Loaded lazily from CDN; hides gracefully if offline.
 - **BS ⇄ AD dates** — `bikram-sambat` npm library (CDN).
 - Boundary instants (tithi/nakshatra/yoga/karana start–end) were cross-verified against `astronomy-engine` to within **±1 minute**; graha positions agree to the arcminute.
+- **Official BS corrections** — the `bikram-sambat` library's projected table can drift from the published patro. Where a divergence has been verified against official sources (e.g. BS 2083: Ashoj 31 days, Mangsir 29 days, so Kartik 1 = Oct 18, 2026 and Nov 14, 2026 = Kartik 28), the app applies an override table (`BS_OVERRIDES` in the source) instead of trusting the library. To correct a future year, add one entry there.
 
 ## 🚀 Run
 

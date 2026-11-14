@@ -494,6 +494,56 @@
 <script type="module">
 import * as bs from 'https://cdn.jsdelivr.net/npm/bikram-sambat@1.6.0/+esm';
 
+/* ============================================================
+   OFFICIAL BS CALENDAR CORRECTIONS
+   bikram-sambat@1.6.0's projected table drifts from the published patro in
+   part of BS 2083: Ashoj has 31 days (lib 30) and Mangsir 29 (lib 30), so
+   every AD date from Kartik 1 (2026-10-18) through Mangsir 30 (2026-12-15)
+   reads one BS day LATE in the lib (e.g. 2026-11-14 = कार्तिक २९ instead of
+   the official कार्तिक २८). Cross-checked against hamropatro and
+   nepalicalendar.rat32.com on 2026-11-14 (Nov 14 = Kartik 28 Sat; Chhath =
+   Kartik 29 = Nov 15; Ashoj 1 = Sep 17 = Biswakarma Puja; Kartik 30 = Nov 16;
+   Mangsir 1 = Nov 17; Push 1 = Dec 16). The offset self-cancels at Push 1 and
+   Baisakh 1, 2084 = 2027-04-14 matches the lib. To correct another year, add
+   { monthLens (official), startAD: [Y,M,D] of Baisakh 1 } to BS_OVERRIDES.
+============================================================ */
+const BS_OVERRIDES = {
+  2083: {
+    monthLens: [31,31,32,31,31,31,30,29,29,30,30,30],
+    startAD: [2026,4,14]   /* Baisakh 1, 2083 = 2026-04-14 */
+  }
+};
+function bsToGreg(y,m,d){
+  const ov=BS_OVERRIDES[y];
+  if(ov){
+    const start=Date.UTC(ov.startAD[0],ov.startAD[1]-1,ov.startAD[2]);
+    let days=0; for(let i=0;i<m-1;i++) days+=ov.monthLens[i];
+    const t=new Date(start+(days+d-1)*86400000);
+    return {year:t.getUTCFullYear(),month:t.getUTCMonth()+1,day:t.getUTCDate()};
+  }
+  return bs.toGreg(y,m,d);
+}
+function bsDaysInMonth(y,m){
+  const ov=BS_OVERRIDES[y];
+  if(ov) return ov.monthLens[m-1];
+  return bs.daysInMonth(y,m);
+}
+function bsToBik(v){ /* v: 'YYYY-MM-DD' (AD) */
+  const t=Date.UTC(+v.slice(0,4),+v.slice(5,7)-1,+v.slice(8,10));
+  for(const [y,ov] of Object.entries(BS_OVERRIDES)){
+    const start=Date.UTC(ov.startAD[0],ov.startAD[1]-1,ov.startAD[2]);
+    const total=ov.monthLens.reduce((a,b)=>a+b,0);
+    if(t>=start&&t<=start+(total-1)*86400000){
+      let o=Math.round((t-start)/86400000);
+      for(let m=0;m<12;m++){
+        if(o<ov.monthLens[m]) return {year:+y,month:m+1,day:o+1};
+        o-=ov.monthLens[m];
+      }
+    }
+  }
+  return bs.toBik(v);
+}
+
 /* astronomy-engine (the same library the Nakshatra Wheel project uses) — only
    needed for the five classical planets; Sun/Moon/nodes stay on the local
    engine so tithi/nakshatra boundaries always agree with the wheel markers.
@@ -617,7 +667,7 @@ function makeUTC(y,m,d){
   return new Date(midnightNPT+Math.round(st.sunrise)*60000);
 }
 function nowKTMSunrise(){ const p=fmtKtmParts(new Date()); return makeUTC(p.year,p.month,p.day); }
-function getBs(date){ const ad=fmtKtm(date,{year:'numeric',month:'2-digit',day:'2-digit'}); const [m,d,y]=ad.split('/'); const b=bs.toBik(`${y}-${m}-${d}`); return {year:b.year,month:b.month,day:b.day}; }
+function getBs(date){ const ad=fmtKtm(date,{year:'numeric',month:'2-digit',day:'2-digit'}); const [m,d,y]=ad.split('/'); const b=bsToBik(`${y}-${m}-${d}`); return {year:b.year,month:b.month,day:b.day}; }
 function minToHM(min){ const h=Math.floor(min/60)%24, m=Math.round(min%60); return `${toD(String(h).padStart(2,'0'))}:${toD(String(m).padStart(2,'0'))}`; }
 
 /* ---------- Day-aware time formatting ----------
@@ -1172,17 +1222,17 @@ function renderCalendar(dir){
   if(dir){ void grid.offsetWidth, grid.classList.add(dir>0?'slide-l':'slide-r','animate-in'); }
   grid.innerHTML='';
   title.textContent=`${BS_MONTHS[bsM-1]} ${toD(bsY)}`;
-  const sa=bs.toGreg(bsY,bsM,1), ea=bs.toGreg(bsY,bsM,bs.daysInMonth(bsY,bsM));
+  const sa=bsToGreg(bsY,bsM,1), ea=bsToGreg(bsY,bsM,bsDaysInMonth(bsY,bsM));
   document.getElementById('monthSub').textContent=`${AD_MONTHS[sa.month-1]} – ${AD_MONTHS[ea.month-1]} ${toD(ea.year)} · ${rituOf(bsM)} ऋतु`;
   const fd=fmtKtmParts(makeUTC(sa.year,sa.month-1,sa.day)).weekday;
-  const dim=bs.daysInMonth(bsY,bsM);
+  const dim=bsDaysInMonth(bsY,bsM);
   const pm=bsM===1?12:bsM-1, py=bsM===1?bsY-1:bsY;
-  const pdim=bs.daysInMonth(py,pm);
-  for(let i=fd-1;i>=0;i--){ const g=bs.toGreg(py,pm,pdim-i); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),true)); }
-  for(let d=1;d<=dim;d++){ const g=bs.toGreg(bsY,bsM,d); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),false)); }
+  const pdim=bsDaysInMonth(py,pm);
+  for(let i=fd-1;i>=0;i--){ const g=bsToGreg(py,pm,pdim-i); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),true)); }
+  for(let d=1;d<=dim;d++){ const g=bsToGreg(bsY,bsM,d); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),false)); }
   const nm=bsM===12?1:bsM+1, ny=bsM===12?bsY+1:bsY;
   const rem=(fd+dim)%7===0?0:7-(fd+dim)%7;
-  for(let i=1;i<=rem;i++){ const g=bs.toGreg(ny,nm,i); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),true)); }
+  for(let i=1;i<=rem;i++){ const g=bsToGreg(ny,nm,i); grid.appendChild(mkCell(makeUTC(g.year,g.month-1,g.day),true)); }
   [...grid.children].forEach((c,i)=>c.style.setProperty('--i',Math.min(i,44)));
 }
 
@@ -1360,7 +1410,7 @@ dateJump.addEventListener('change',()=>{
   const v=dateJump.value;
   if(!v) return;
   let g=null;
-  try{ g=bs.toBik(v); }catch{ g=null; }
+  try{ g=bsToBik(v); }catch{ g=null; }
   if(!g||!g.year){
     dateJumpErr.textContent='यो मिति पात्रोको दायरा (वि.सं १९७०–२०९०) बाहिर छ — कृपया ई.सं १९१३–२०३४ भित्रको मिति छान्नुहोस्।';
     dateJumpErr.hidden=false;
