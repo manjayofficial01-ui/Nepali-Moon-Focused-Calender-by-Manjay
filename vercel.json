@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/", "destination": "/Nepali_Calender.html" }]
+}
